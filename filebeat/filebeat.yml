@@ -1,0 +1,25 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /usr/share/filebeat/logs/*.log
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+
+filebeat.modules:
+  - module: apache
+    access:
+      enabled: true
+      var.paths: ["/usr/share/filebeat/logs/*.log"] 
+    error:
+      enabled: false
+
+# Enable modules configuration
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+
+setup:
+  kibana.host: "http://kibana:5601"
+  dashboards.enable: true
